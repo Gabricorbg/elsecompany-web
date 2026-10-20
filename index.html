@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Else Company</title>
+    <meta name="description" content="The Else Company: curated secondhand fashion with a firsthand feeling. Coming soon.">
+    <meta property="og:title" content="The Else Company">
+    <meta property="og:description" content="Curated secondhand fashion with a firsthand feeling. Coming soon.">
+    <meta property="og:image" content="https://else-secondhand.com/logo.png">
+    <meta property="og:url" content="https://else-secondhand.com">
+    <meta name="twitter:card" content="summary">
+    <link rel="icon" href="version_1-blanco.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        html {
+            overflow-x: hidden;
+        }
+
+        /* Background: fabric photo with a light corporate tint on top */
+        body {
+            position: relative;
+            margin: 0;
+            min-height: 100vh;
+            min-height: 100dvh;
+            overflow-x: hidden;
+            background: linear-gradient(rgba(161, 192, 255, 0.15), rgba(161, 192, 255, 0.15)),
+            url("fondo.avif") center / cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #ffffff;
+            text-align: center;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+
+        /* Subtle grain over the whole page */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.08;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+            z-index: 10;
+        }
+
+        /* Small top subtitle */
+        .top-subtitle {
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            opacity: 0.9;
+        }
+
+        /* Center block (logo + category labels) */
+        .center-content {
+            position: absolute;
+            top: 35%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo-stack {
+            display: grid;
+            place-items: start center;
+        }
+
+        .logo-stack > div {
+            grid-area: 1 / 1;
+            transition: opacity 3s ease, filter 3s ease, transform 3s ease;
+        }
+
+        .logo-stack > div.is-hidden {
+            opacity: 0;
+            filter: blur(10px);
+            transform: scale(0.96);
+            pointer-events: none;
+        }
+
+        /* Large logo container */
+        .logo-text {
+            font-size: clamp(4rem, 22vw, 13rem);
+            font-weight: 500;
+            letter-spacing: 0;
+            line-height: 1;
+            margin: 0 0 15px 0;
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.06);
+        }
+
+        .logo-img {
+            max-height: 1.5em;
+            width: auto;
+            vertical-align: middle;
+        }
+
+        /* Animation only on the home logo */
+        #home-view .logo-img {
+            animation:
+                    logo-reveal 4s cubic-bezier(0.22, 1, 0.36, 1) both,
+                    logo-float 10s ease-in-out 3s infinite;
+        }
+
+        @keyframes logo-reveal {
+            from {
+                opacity: 0;
+                filter: blur(24px);
+                transform: scale(4);
+            }
+            to {
+                opacity: 1;
+                filter: blur(0);
+                transform: scale(1);
+            }
+        }
+
+        @keyframes logo-float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+
+        /* Staggered cascade for the rest of the elements.
+           Delays are longer on first load and shorter when replayed. */
+        .reveal {
+            animation: fade-up 1.2s ease-out both;
+            animation-delay: var(--delay, 0s);
+        }
+
+        .d1 { --delay: 1.8s; }
+        .d2 { --delay: 2.2s; }
+        .d3 { --delay: 2.5s; }
+
+        body.is-replay .d1 { --delay: 0s; }
+        body.is-replay .d2 { --delay: 0.3s; }
+        body.is-replay .d3 { --delay: 0.6s; }
+
+        /* Only "from" is defined so the final opacity keeps each element's own value */
+        @keyframes fade-up {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                transform: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #home-view .logo-img,
+            .reveal {
+                animation: none;
+            }
+        }
+
+        /* Category labels below the logo, with extra space between them */
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: clamp(16px, 10vw, 120px);
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0.85;
+        }
+
+        /* Long text at the bottom */
+        .footer-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+            max-width: 450px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        /* Bottom section wrapper */
+        .footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .coming-soon {
+            margin: 0;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0.85;
+        }
+
+        /* About us button: filled pill */
+        .about-btn {
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            color: #ffffff;
+            background: #a1c0ff;
+            border: none;
+            border-radius: 999px;
+            padding: 12px 34px;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            transition: background 0.2s ease;
+        }
+
+        .about-btn:hover {
+            background: #8fb3f5;
+        }
+
+        /* Contact block shown after pressing About us */
+        .contact-info {
+            font-size: 0.8rem;
+            font-weight: 500;
+            max-width: 450px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .contact-info a {
+            color: #ffffff;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        /* Social links row */
+        .socials {
+            margin-top: 14px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .socials a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .socials a:hover {
+            text-decoration: underline;
+        }
+
+        /* Inline "work in progress" notice */
+        .wip-note {
+            margin: 8px 0 0 0;
+            font-size: 0.7rem;
+            min-height: 1em;
+            opacity: 0.8;
+        }
+
+        /* Back button inside the contact block */
+        .back-btn {
+            margin-top: 16px;
+            font-family: inherit;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #ffffff;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 999px;
+            padding: 8px 22px;
+            cursor: pointer;
+        }
+
+        /* Secondary contact line */
+        .tech-contact {
+            margin: 10px 0 0 0;
+            font-size: 0.7rem;
+            opacity: 0.7;
+        }
+
+        /* Legal links at the very bottom */
+        .legal {
+            font-size: 0.7rem;
+            opacity: 0.8;
+            margin-top: 10px;
+        }
+
+        .legal a {
+            color: #ffffff;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 600px) {
+            body {
+                padding: 24px 16px;
+            }
+
+            .top-subtitle {
+                font-size: 0.75rem;
+            }
+
+            .center-content {
+                top: 40%;
+            }
+
+            .logo-text {
+                margin-bottom: 10px;
+            }
+
+            .categories {
+                font-size: 0.7rem;
+                gap: 14px;
+            }
+
+            .footer {
+                gap: 14px;
+            }
+
+            .footer-text {
+                font-size: 0.8rem;
+                line-height: 1.5;
+            }
+
+            .about-btn {
+                padding: 10px 28px;
+            }
+
+            .contact-info {
+                font-size: 0.75rem;
+            }
+
+            .socials {
+                gap: 14px;
+            }
+
+            .legal {
+                font-size: 0.65rem;
+                line-height: 1.5;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top text -->
+<div class="top-subtitle">
+    The Else Company
+</div>
+
+<!-- Center: logo and category labels -->
+<div class="center-content">
+    <div class="logo-stack">
+        <div id="home-view">
+            <h1 class="logo-text"><img src="version_1-blanco.png" alt="ELSE" class="logo-img"></h1>
+            <div class="categories reveal d1">
+                <span>Curated</span>
+                <span>Tech</span>
+                <span>Fashion</span>
+            </div>
+        </div>
+        <div id="about-view" class="is-hidden">
+            <h1 class="logo-text"><img src="version_2-blanco.png" alt="ee" class="logo-img"></h1>
+            <p class="coming-soon reveal d1">Coming soon</p>
+        </div>
+    </div>
+</div>
+
+<!-- Bottom section -->
+<div class="footer">
+    <div class="footer-text reveal d2">
+        Else is designed to make shopping secondhand fashion feel as good as buying firsthand.
+    </div>
+
+    <button class="about-btn reveal d3" id="about-btn">About us</button>
+
+    <div class="contact-info reveal d2" id="contact-info" hidden>
+        <p>
+            Reach out to <a href="mailto:claudia@elsecompany.com">claudia@elsecompany.com</a> for general and press inquiries,
+            and follow us along at the links below.
+        </p>
+
+        <div class="socials">
+            <a href="#" class="wip">Instagram</a>
+            <a href="#" class="wip">TikTok</a>
+            <a href="https://www.linkedin.com/company/elsecompany/?viewAsMember=true">LinkedIn</a>
+        </div>
+        <p class="wip-note" id="wip-note"></p>
+
+        <p class="tech-contact">
+            Curious about the tech behind it? Write to <a href="mailto:gabriela@elsecompany.com">gabriela@elsecompany.com</a>
+        </p>
+
+        <button class="back-btn" id="back-btn">Back</button>
+    </div>
+
+    <div class="legal">
+        © 2026 The Else Company · <a href="#">Legal notice</a> · <a href="#">Privacy policy</a>
+    </div>
+</div>
+
+<script>
+    // Elements
+    const aboutButton = document.getElementById('about-btn');
+    const contactInfo = document.getElementById('contact-info');
+    const backButton = document.getElementById('back-btn');
+    const homeView = document.getElementById('home-view');
+    const aboutView = document.getElementById('about-view');
+    const footerText = document.querySelector('.footer-text');
+    const wipNote = document.getElementById('wip-note');
+
+    // Restart the cascade animation on the given elements
+    function replayCascade(elements) {
+        document.body.classList.add('is-replay');
+        elements.forEach(el => {
+            el.classList.remove('reveal');
+            void el.offsetWidth; // force reflow so the animation restarts
+            el.classList.add('reveal');
+        });
+    }
+
+    // Crossfade to the "ee" logo, show contact details and replay the cascade
+    aboutButton.addEventListener('click', () => {
+        aboutButton.hidden = true;
+        homeView.classList.add('is-hidden');
+        aboutView.classList.remove('is-hidden');
+        contactInfo.hidden = false;
+        replayCascade([...aboutView.querySelectorAll('.reveal'), contactInfo, footerText]);
+    });
+
+    // Crossfade back to the "ELSE" logo and replay the cascade
+    backButton.addEventListener('click', () => {
+        contactInfo.hidden = true;
+        wipNote.textContent = '';
+        aboutView.classList.add('is-hidden');
+        homeView.classList.remove('is-hidden');
+        aboutButton.hidden = false;
+        replayCascade([...homeView.querySelectorAll('.reveal'), footerText, aboutButton]);
+    });
+
+    // Links not ready yet: show an inline work-in-progress notice
+    document.querySelectorAll('.wip').forEach(link => {
+        link.addEventListener('click', event => {
+            event.preventDefault();
+            wipNote.textContent = 'Work in progress';
+        });
+    });
+</script>
+
+</body>
+</html>
