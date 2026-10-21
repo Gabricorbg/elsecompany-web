@@ -685,7 +685,7 @@
     // to Google Sheets (see newsletter-apps-script.gs). Leave empty to disable both.
     const NEWSLETTER_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzZ4DXSE1MHEBm0YE2ja69Lr7MSzBOmjRJs6lUyJSHpe6pwrZc6FRbVRC4Y0FPeDphN/exec';
 
-    // Count this visit anonymously: page, referring site and device type only.
+    // Count this visit anonymously: page, referring site, device type and time zone only.
     // No cookies or browser storage are used, so no cookie banner is needed.
     function recordVisit() {
         if (!NEWSLETTER_ENDPOINT || !navigator.sendBeacon) return;
@@ -701,6 +701,8 @@
             page: location.pathname,
             referrer: referrer || 'direct',
             device: window.matchMedia('(max-width: 600px)').matches ? 'mobile' : 'desktop',
+            // Approximate region from the device's time zone (e.g. "Europe/Madrid"); no IP lookup
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
         });
         navigator.sendBeacon(NEWSLETTER_ENDPOINT, visit);
     }
