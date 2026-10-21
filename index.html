@@ -394,6 +394,42 @@
             cursor: default;
         }
 
+        /* Sending state: spinner inside the button */
+        .newsletter-submit {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-width: 112px;
+        }
+
+        .newsletter-submit.is-loading,
+        .newsletter-submit.is-loading:disabled {
+            opacity: 1;
+            cursor: progress;
+            background: #8fb3f5;
+        }
+
+        .spinner {
+            width: 12px;
+            height: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Fields are locked while sending */
+        .newsletter-form.is-sending input {
+            opacity: 0.7;
+        }
+
         /* Consent checkbox: never pre-checked (GDPR) */
         .consent {
             display: flex;
@@ -598,7 +634,10 @@
                 <label for="newsletter-email" class="visually-hidden">Email address</label>
                 <input type="email" id="newsletter-email" name="email"
                        placeholder="your@email.com" autocomplete="email" required>
-                <button type="submit" class="newsletter-submit" id="newsletter-submit">Subscribe</button>
+                <button type="submit" class="newsletter-submit" id="newsletter-submit">
+                    <span class="spinner" id="newsletter-spinner" aria-hidden="true" hidden></span>
+                    <span id="newsletter-submit-label">Subscribe</span>
+                </button>
             </div>
 
             <label class="consent">
@@ -659,6 +698,23 @@
     const newsletterEmail = document.getElementById('newsletter-email');
     const newsletterConsent = document.getElementById('newsletter-consent');
     const newsletterSubmit = document.getElementById('newsletter-submit');
+    const newsletterSpinner = document.getElementById('newsletter-spinner');
+    const newsletterSubmitLabel = document.getElementById('newsletter-submit-label');
+    let isSending = false;
+
+    // Show a spinner on the button and lock the form while the signup is being sent
+    function setSending(sending) {
+        isSending = sending;
+        newsletterSubmit.disabled = sending;
+        newsletterSubmit.classList.toggle('is-loading', sending);
+        newsletterSubmit.setAttribute('aria-busy', String(sending));
+        newsletterSpinner.hidden = !sending;
+        newsletterSubmitLabel.textContent = sending ? 'Subscribing…' : 'Subscribe';
+        newsletterForm.classList.toggle('is-sending', sending);
+        newsletterEmail.readOnly = sending;
+        newsletterConsent.disabled = sending;
+        document.getElementById('newsletter-back').disabled = sending;
+    }
     const newsletterStatus = document.getElementById('newsletter-status');
     const honeypot = document.getElementById('newsletter-website');
     const newsletterSuccess = document.getElementById('newsletter-success');
@@ -778,6 +834,7 @@
     // Validate and send the signup
     newsletterForm.addEventListener('submit', async event => {
         event.preventDefault();
+        if (isSending) return; // ignore extra clicks or Enter presses while sending
         newsletterStatus.textContent = '';
 
         // Bots fill the hidden field: pretend it worked and send nothing
@@ -813,7 +870,7 @@
         data.append('consent_text', document.getElementById('consent-text').textContent.replace(/\s+/g, ' ').trim());
         data.append('consent_timestamp', new Date().toISOString());
 
-        newsletterSubmit.disabled = true;
+        setSending(true);
         try {
             const response = await fetch(NEWSLETTER_ENDPOINT, { method: 'POST', body: data });
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -831,7 +888,7 @@
             console.error('Newsletter signup failed:', error);
             newsletterStatus.textContent = 'Something went wrong. Please try again later.';
         } finally {
-            newsletterSubmit.disabled = false;
+            setSending(false);
         }
     });
 
