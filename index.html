@@ -141,10 +141,17 @@
         .d1 { --delay: 1.8s; }
         .d2 { --delay: 2.2s; }
         .d3 { --delay: 2.5s; }
+        .d4 { --delay: 2.8s; }
 
         body.is-replay .d1 { --delay: 0s; }
         body.is-replay .d2 { --delay: 0.3s; }
         body.is-replay .d3 { --delay: 0.6s; }
+        body.is-replay .d4 { --delay: 0.9s; }
+
+        /* Make sure the hidden attribute always wins over display rules */
+        [hidden] {
+            display: none !important;
+        }
 
         /* Only "from" is defined so the final opacity keeps each element's own value */
         @keyframes fade-up {
@@ -300,6 +307,151 @@
             color: #ffffff;
         }
 
+        /* Newsletter: outline pill that expands into the signup form */
+        .newsletter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 380px;
+        }
+
+        .newsletter-btn {
+            font-family: inherit;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #ffffff;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 999px;
+            padding: 10px 26px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .newsletter-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            margin-top: 12px;
+        }
+
+        .newsletter-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .newsletter-row input[type="email"] {
+            flex: 1;
+            min-width: 0;
+            font-family: inherit;
+            font-size: 0.85rem;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 999px;
+            padding: 10px 16px;
+            outline: none;
+        }
+
+        .newsletter-row input[type="email"]::placeholder {
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .newsletter-row input[type="email"]:focus {
+            background: rgba(255, 255, 255, 0.22);
+            box-shadow: 0 0 0 2px rgba(161, 192, 255, 0.8);
+        }
+
+        .newsletter-submit {
+            font-family: inherit;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #ffffff;
+            background: #a1c0ff;
+            border: none;
+            border-radius: 999px;
+            padding: 10px 18px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .newsletter-submit:hover {
+            background: #8fb3f5;
+        }
+
+        .newsletter-submit:disabled {
+            opacity: 0.6;
+            cursor: default;
+        }
+
+        /* Consent checkbox: never pre-checked (GDPR) */
+        .consent {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            text-align: left;
+            font-size: 0.7rem;
+            line-height: 1.5;
+            cursor: pointer;
+        }
+
+        .consent input {
+            flex-shrink: 0;
+            margin: 2px 0 0 0;
+            accent-color: #a1c0ff;
+        }
+
+        .newsletter-legal {
+            margin: 0;
+            text-align: left;
+            font-size: 0.65rem;
+            line-height: 1.5;
+            opacity: 0.8;
+        }
+
+        .newsletter-legal a {
+            color: #ffffff;
+        }
+
+        .newsletter-status {
+            margin: 0;
+            font-size: 0.75rem;
+            min-height: 1em;
+        }
+
+        .newsletter-back {
+            margin-top: 0;
+            align-self: center;
+        }
+
+        /* Hidden field to catch spam bots */
+        .honeypot {
+            position: absolute;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+            white-space: nowrap;
+        }
+
         /* Mobile adjustments */
         @media (max-width: 600px) {
             body {
@@ -404,8 +556,49 @@
         <button class="back-btn" id="back-btn">Back</button>
     </div>
 
+    <!-- Newsletter signup (consent-based: valid for both EU/GDPR and US/CAN-SPAM) -->
+    <div class="newsletter reveal d4" id="newsletter">
+        <button class="newsletter-btn" id="newsletter-btn" type="button"
+                aria-expanded="false" aria-controls="newsletter-form">
+            Subscribe to our newsletter
+        </button>
+
+        <form class="newsletter-form" id="newsletter-form" hidden novalidate>
+            <div class="newsletter-row">
+                <label for="newsletter-email" class="visually-hidden">Email address</label>
+                <input type="email" id="newsletter-email" name="email"
+                       placeholder="your@email.com" autocomplete="email" required>
+                <button type="submit" class="newsletter-submit" id="newsletter-submit">Subscribe</button>
+            </div>
+
+            <label class="consent">
+                <input type="checkbox" id="newsletter-consent" name="consent" value="yes" required>
+                <span id="consent-text">
+                    I'm 16 or older and I agree to receive emails from The Else Company
+                    about our launch, news and offers. I can unsubscribe at any time.
+                </span>
+            </label>
+
+            <p class="newsletter-legal">
+                We'll use your email only to send you these updates, based on your consent, and we never sell it.
+                Every email includes an unsubscribe link. See our <a href="privacy.html">Privacy policy</a>
+                to learn how to access or delete your data.
+            </p>
+
+            <!-- Spam trap: real users never see or fill this field -->
+            <div class="honeypot" aria-hidden="true">
+                <label for="newsletter-website">Leave this field empty</label>
+                <input type="text" id="newsletter-website" name="website" tabindex="-1" autocomplete="off">
+            </div>
+
+            <p class="newsletter-status" id="newsletter-status" role="status" aria-live="polite"></p>
+
+            <button class="back-btn newsletter-back" id="newsletter-back" type="button">Back</button>
+        </form>
+    </div>
+
     <div class="legal">
-        © 2026 The Else Company · <a href="#">Legal notice</a> · <a href="#">Privacy policy</a>
+        © 2026 The Else Company · <a href="legal.html">Legal notice</a> · <a href="privacy.html">Privacy policy</a>
     </div>
 </div>
 
@@ -418,6 +611,53 @@
     const aboutView = document.getElementById('about-view');
     const footerText = document.querySelector('.footer-text');
     const wipNote = document.getElementById('wip-note');
+    const newsletter = document.getElementById('newsletter');
+    const newsletterButton = document.getElementById('newsletter-btn');
+    const newsletterForm = document.getElementById('newsletter-form');
+    const newsletterEmail = document.getElementById('newsletter-email');
+    const newsletterConsent = document.getElementById('newsletter-consent');
+    const newsletterSubmit = document.getElementById('newsletter-submit');
+    const newsletterStatus = document.getElementById('newsletter-status');
+    const honeypot = document.getElementById('newsletter-website');
+
+    // Newsletter config.
+    // NEWSLETTER_ENDPOINT: Web app URL of the Google Apps Script that saves signups and visits
+    // to Google Sheets (see newsletter-apps-script.gs). Leave empty to disable both.
+    const NEWSLETTER_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzZ4DXSE1MHEBm0YE2ja69Lr7MSzBOmjRJs6lUyJSHpe6pwrZc6FRbVRC4Y0FPeDphN/exec';
+
+    // Count this visit anonymously: page, referring site and device type only.
+    // No cookies or browser storage are used, so no cookie banner is needed.
+    function recordVisit() {
+        if (!NEWSLETTER_ENDPOINT || !navigator.sendBeacon) return;
+        let referrer = '';
+        try {
+            const host = document.referrer ? new URL(document.referrer).hostname : '';
+            if (host && host !== location.hostname) referrer = host;
+        } catch {
+            // Ignore malformed referrers
+        }
+        const visit = new URLSearchParams({
+            type: 'visit',
+            page: location.pathname,
+            referrer: referrer || 'direct',
+            device: window.matchMedia('(max-width: 600px)').matches ? 'mobile' : 'desktop',
+        });
+        navigator.sendBeacon(NEWSLETTER_ENDPOINT, visit);
+    }
+
+    recordVisit();
+    // Bump this date whenever the consent text changes, so each signup records which version was accepted
+    const CONSENT_VERSION = '2026-10-21';
+
+    // Collapse the signup form back to the single button
+    function resetNewsletter() {
+        footerText.hidden = false;
+        aboutButton.hidden = false;
+        newsletterForm.hidden = true;
+        newsletterButton.hidden = false;
+        newsletterButton.setAttribute('aria-expanded', 'false');
+        newsletterStatus.textContent = '';
+    }
 
     // Restart the cascade animation on the given elements
     function replayCascade(elements) {
@@ -432,6 +672,7 @@
     // Crossfade to the "ee" logo, show contact details and replay the cascade
     aboutButton.addEventListener('click', () => {
         aboutButton.hidden = true;
+        newsletter.hidden = true;
         homeView.classList.add('is-hidden');
         aboutView.classList.remove('is-hidden');
         contactInfo.hidden = false;
@@ -445,7 +686,90 @@
         aboutView.classList.add('is-hidden');
         homeView.classList.remove('is-hidden');
         aboutButton.hidden = false;
-        replayCascade([...homeView.querySelectorAll('.reveal'), footerText, aboutButton]);
+        resetNewsletter();
+        newsletter.hidden = false;
+        replayCascade([...homeView.querySelectorAll('.reveal'), footerText, aboutButton, newsletter]);
+    });
+
+    // Open the signup form. It takes the place of the tagline and About button
+    // so the footer doesn't grow into the logo on short screens.
+    newsletterButton.addEventListener('click', () => {
+        footerText.hidden = true;
+        aboutButton.hidden = true;
+        newsletterButton.hidden = true;
+        newsletterButton.setAttribute('aria-expanded', 'true');
+        newsletterForm.hidden = false;
+        replayCascade([newsletter]);
+        newsletterEmail.focus();
+    });
+
+    // Close the signup form and bring back the home footer
+    document.getElementById('newsletter-back').addEventListener('click', () => {
+        resetNewsletter();
+        replayCascade([footerText, aboutButton, newsletter]);
+        newsletterButton.focus();
+    });
+
+    // Validate and send the signup
+    newsletterForm.addEventListener('submit', async event => {
+        event.preventDefault();
+        newsletterStatus.textContent = '';
+
+        // Bots fill the hidden field: pretend it worked and send nothing
+        if (honeypot.value) {
+            newsletterForm.reset();
+            newsletterStatus.textContent = "You're on the list. Thank you!";
+            return;
+        }
+
+        if (!newsletterEmail.checkValidity()) {
+            newsletterStatus.textContent = 'Please enter a valid email address.';
+            newsletterEmail.focus();
+            return;
+        }
+
+        // Consent must be an explicit, active choice
+        if (!newsletterConsent.checked) {
+            newsletterStatus.textContent = 'Please tick the box to agree to receive the newsletter.';
+            newsletterConsent.focus();
+            return;
+        }
+
+        if (!NEWSLETTER_ENDPOINT) {
+            newsletterStatus.textContent = 'Signups open very soon. Thanks for your interest!';
+            return;
+        }
+
+        // Send the email plus a record of what was consented to and when
+        // Sent as a plain form so the browser doesn't need a CORS preflight
+        const data = new URLSearchParams();
+        data.append('email', newsletterEmail.value.trim());
+        data.append('consent', 'yes');
+        data.append('consent_version', CONSENT_VERSION);
+        data.append('consent_text', document.getElementById('consent-text').textContent.replace(/\s+/g, ' ').trim());
+        data.append('consent_timestamp', new Date().toISOString());
+
+        newsletterSubmit.disabled = true;
+        try {
+            const response = await fetch(NEWSLETTER_ENDPOINT, { method: 'POST', body: data });
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            // Read as text first so a non-JSON reply (e.g. a Google sign-in page) shows up in the console
+            const raw = await response.text();
+            let result;
+            try {
+                result = JSON.parse(raw);
+            } catch {
+                throw new Error(`Endpoint did not return JSON. Check the Web app access settings. Response starts with: ${raw.slice(0, 200)}`);
+            }
+            if (!result.ok) throw new Error(result.error || 'Signup rejected');
+            newsletterForm.reset();
+            newsletterStatus.textContent = "You're on the list. Thank you!";
+        } catch (error) {
+            console.error('Newsletter signup failed:', error);
+            newsletterStatus.textContent = 'Something went wrong. Please try again later.';
+        } finally {
+            newsletterSubmit.disabled = false;
+        }
     });
 
     // Links not ready yet: show an inline work-in-progress notice
