@@ -781,6 +781,22 @@
                 font-size: 0.7rem;
             }
         }
+
+        /* iPhone / iPad Safari only: the large viewport stops short of the home-indicator strip,
+           so the page is made 100px taller to carry the photo all the way to the bottom edge.
+           The footer keeps its position because the extra space is added to the bottom padding. */
+        @supports (-webkit-touch-callout: none) {
+            body {
+                min-height: calc(100lvh + 100px);
+                padding-bottom: calc(max(40px, env(safe-area-inset-bottom)) + 100lvh - 100svh + 100px);
+            }
+
+            @media (max-width: 600px) {
+                body {
+                    padding-bottom: calc(36px + env(safe-area-inset-bottom) + 100lvh - 100svh + 100px);
+                }
+            }
+        }
     </style>
 </head>
 <body>
