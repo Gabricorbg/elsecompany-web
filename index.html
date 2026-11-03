@@ -648,7 +648,7 @@
 
     <div class="contact-info reveal d2" id="contact-info" hidden>
         <p data-i18n-html="contactIntro">
-            Reach out to <a href="mailto:claudia@elsecompany.com">claudia@elsecompany.com</a> for general and press inquiries,
+            Reach out to ${ELSE_LINK} for general and press inquiries,
             and follow us along at the links below.
         </p>
 
@@ -657,10 +657,6 @@
             <a href="https://www.tiktok.com/@the.else.company?_r=1&_t=ZP-9AlocrACvTK">TikTok</a>
             <a href="https://www.linkedin.com/company/elsecompany/?viewAsMember=true">LinkedIn</a>
         </div>
-
-        <p class="tech-contact" data-i18n-html="techContact">
-            Curious about the tech behind it? Write to <a href="mailto:gabriela@elsecompany.com">gabriela@elsecompany.com</a>
-        </p>
 
         <button class="back-btn" id="back-btn" data-i18n="back">Back</button>
     </div>
@@ -723,15 +719,14 @@
 
     <div class="legal">
         © 2026 The Else Company · <a href="legal.html" data-i18n="legalNotice">Legal notice</a> · <a href="privacy.html" data-i18n="privacyPolicy" data-i18n-href="privacyUrl">Privacy policy</a>
-        <nav class="lang-switch" id="lang-switch" aria-label="Language"></nav>
+      <!-- UNCOMENT TO HAVE LANGUAGE MENU <nav class="lang-switch" id="lang-switch" aria-label="Language"></nav>-->  
     </div>
 </div>
 
 <script>
     // ---------- Translations ----------
     // To add a language: add an entry here, add it to LANGUAGE_NAMES and, optionally, to TIMEZONE_LANGUAGES.
-    const CLAUDIA_LINK = '<a href="mailto:claudia@elsecompany.com">claudia@elsecompany.com</a>';
-    const GABRIELA_LINK = '<a href="mailto:gabriela@elsecompany.com">gabriela@elsecompany.com</a>';
+    const ELSE_LINK = '<a href="mailto:else@elsecompany.com">else@elsecompany.com</a>';
 
     const LANGUAGE_NAMES = {
         en: 'English',
@@ -748,8 +743,7 @@
             tagline: 'Else is designed to make shopping secondhand fashion feel as good as buying firsthand.',
             about: 'About us',
             comingSoon: 'Coming soon',
-            contactIntro: `Reach out to ${CLAUDIA_LINK} for general and press inquiries, and follow us along at the links below.`,
-            techContact: `Curious about the tech behind it? Write to ${GABRIELA_LINK}`,
+            contactIntro: `Reach out to ${ELSE_LINK} for general and press inquiries, and follow us along at the links below.`,
             back: 'Back',
             earlyAccess: 'Get early access',
             emailLabel: 'Email address',
@@ -776,8 +770,7 @@
             tagline: 'Else está pensada para que comprar moda de segunda mano sea tan especial como estrenar.',
             about: 'Sobre nosotros',
             comingSoon: 'Próximamente',
-            contactIntro: `Escribe a ${CLAUDIA_LINK} para consultas generales y de prensa, y síguenos en los enlaces de abajo.`,
-            techContact: `¿Te interesa la tecnología que hay detrás? Escribe a ${GABRIELA_LINK}`,
+            contactIntro: `Escribe a ${ELSE_LINK} para consultas generales y de prensa, y síguenos en los enlaces de abajo.`,
             back: 'Volver',
             earlyAccess: 'Acceso anticipado',
             emailLabel: 'Correo electrónico',
@@ -804,8 +797,7 @@
             tagline: "Else est pensée pour que la mode de seconde main s'achète avec le même plaisir que le neuf.",
             about: 'À propos',
             comingSoon: 'Bientôt disponible',
-            contactIntro: `Écrivez à ${CLAUDIA_LINK} pour toute demande générale ou presse, et suivez-nous via les liens ci-dessous.`,
-            techContact: `Curieux de la technologie derrière Else ? Écrivez à ${GABRIELA_LINK}`,
+            contactIntro: `Écrivez à ${ELSE_LINK} pour toute demande générale ou presse, et suivez-nous via les liens ci-dessous.`,
             back: 'Retour',
             earlyAccess: 'Accès anticipé',
             emailLabel: 'Adresse e-mail',
@@ -832,8 +824,7 @@
             tagline: 'Else ist so gestaltet, dass sich der Kauf von Secondhand-Mode genauso besonders anfühlt wie ein Neukauf.',
             about: 'Über uns',
             comingSoon: 'Demnächst',
-            contactIntro: `Schreib an ${CLAUDIA_LINK} für allgemeine Anfragen und Presseanfragen und folge uns über die Links unten.`,
-            techContact: `Neugierig auf die Technik dahinter? Schreib an ${GABRIELA_LINK}`,
+            contactIntro: `Schreib an ${ELSE_LINK} für allgemeine Anfragen und Presseanfragen und folge uns über die Links unten.`,
             back: 'Zurück',
             earlyAccess: 'Früher Zugang',
             emailLabel: 'E-Mail-Adresse',
@@ -860,8 +851,7 @@
             tagline: 'Else è pensata perché acquistare moda second hand sia speciale quanto comprare qualcosa di nuovo.',
             about: 'Chi siamo',
             comingSoon: 'Prossimamente',
-            contactIntro: `Scrivi a ${CLAUDIA_LINK} per informazioni generali e richieste stampa, e seguici tramite i link qui sotto.`,
-            techContact: `Ti incuriosisce la tecnologia dietro Else? Scrivi a ${GABRIELA_LINK}`,
+            contactIntro: `Scrivi a ${ELSE_LINK} per informazioni generali e richieste stampa, e seguici tramite i link qui sotto.`,
             back: 'Indietro',
             earlyAccess: 'Accesso anticipato',
             emailLabel: 'Indirizzo email',
@@ -888,8 +878,7 @@
             tagline: 'A Else foi pensada para que comprar moda de segunda mão seja tão especial quanto estrear.',
             about: 'Sobre nós',
             comingSoon: 'Em breve',
-            contactIntro: `Escreva para ${CLAUDIA_LINK} para dúvidas gerais e de imprensa, e siga-nos nos links abaixo.`,
-            techContact: `Curioso sobre a tecnologia por trás? Escreva para ${GABRIELA_LINK}`,
+            contactIntro: `Escreva para ${ELSE_LINK} para dúvidas gerais e de imprensa, e siga-nos nos links abaixo.`,
             back: 'Voltar',
             earlyAccess: 'Acesso antecipado',
             emailLabel: 'Endereço de e-mail',
@@ -987,7 +976,7 @@
     // Remembers the last signup result so the confirmation can be re-translated
     let lastSignup = null;
 
-    function applyLanguage(lang) {
+        function applyLanguage(lang) {
         currentLanguage = lang;
         document.documentElement.lang = lang;
         document.getElementById('meta-description').setAttribute('content', t('metaDescription'));
@@ -1010,28 +999,34 @@
         newsletterStatus.textContent = '';
         if (lastSignup) renderSignupSuccess();
 
-        languageSwitch.setAttribute('aria-label', t('languageLabel'));
-        languageSwitch.querySelectorAll('button').forEach(button => {
-            button.setAttribute('aria-pressed', String(button.dataset.lang === lang));
-        });
+        // Re-enable with the language switcher:
+        // if (languageSwitch) {
+        //     languageSwitch.setAttribute('aria-label', t('languageLabel'));
+        //     languageSwitch.querySelectorAll('button').forEach(button => {
+        //         button.setAttribute('aria-pressed', String(button.dataset.lang === lang));
+        //     });
+        // }
     }
 
-    // Build the EN · ES · FR ... buttons
+    // Language switcher (disabled for now). To re-enable it, uncomment the <nav id="lang-switch">
+    // in the HTML and the commented lines at the end of applyLanguage().
     const languageSwitch = document.getElementById('lang-switch');
-    Object.keys(TRANSLATIONS).forEach(lang => {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.dataset.lang = lang;
-        button.lang = lang;
-        button.textContent = lang.toUpperCase();
-        button.title = LANGUAGE_NAMES[lang];
-        button.setAttribute('aria-label', LANGUAGE_NAMES[lang]);
-        button.addEventListener('click', () => {
-            saveLanguage(lang);
-            applyLanguage(lang);
+    if (languageSwitch) {
+        Object.keys(TRANSLATIONS).forEach(lang => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.dataset.lang = lang;
+            button.lang = lang;
+            button.textContent = lang.toUpperCase();
+            button.title = LANGUAGE_NAMES[lang];
+            button.setAttribute('aria-label', LANGUAGE_NAMES[lang]);
+            button.addEventListener('click', () => {
+                saveLanguage(lang);
+                applyLanguage(lang);
+            });
+            languageSwitch.appendChild(button);
         });
-        languageSwitch.appendChild(button);
-    });
+    }
 
     // Elements
     const aboutButton = document.getElementById('about-btn');
