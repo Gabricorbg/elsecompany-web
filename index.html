@@ -31,14 +31,16 @@
             --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        /* The background lives on <html> so it also paints behind the iPhone status bar
-           and Safari's toolbar (no solid blue bands at the top and bottom) */
+        /* Background (grain + tint + photo) lives on <html>, with no fixed-position layers:
+           on iPhone, Safari paints a solid colour behind its bars whenever a fixed element
+           touches the screen edges. Without one, the photo continues behind the bars. */
         html {
             min-height: 100%;
             overflow-x: hidden;
-            background: linear-gradient(rgba(161, 192, 255, 0.15), rgba(161, 192, 255, 0.15)),
+            background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.08'/></svg>"),
+            linear-gradient(rgba(161, 192, 255, 0.15), rgba(161, 192, 255, 0.15)),
             url("fondo.jpg") center / cover no-repeat,
-            #a1c0ff;
+            #8fa4cc;
         }
 
         body {
@@ -57,16 +59,6 @@
             padding: max(40px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right))
             max(40px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
             box-sizing: border-box;
-        }
-
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            opacity: 0.08;
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-            z-index: 10;
         }
 
         /* Nothing inside changes height between views, so the block never jumps */
