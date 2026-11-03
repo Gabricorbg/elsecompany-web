@@ -20,7 +20,7 @@
            from the mobile mockup at 393 px wide. */
         :root {
             --logo-h: clamp(96px, 33vw, 312px);   /* height of the logo image */
-            --cat-font: 0.8rem;                   /* "Curated Tech Fashion" size */
+            --cat-font: 0.8rem;                   /* "Curated AI Fashion" size */
             --cat-lh: 1.2;
             --cat-gap: 18px;                      /* space between categories and logo */
             --cat-h: calc(var(--cat-font) * var(--cat-lh) + var(--cat-gap));
@@ -807,7 +807,7 @@
             <div class="categories-wrap">
                 <div class="categories reveal d1">
                     <span>Curated</span>
-                    <span>Tech</span>
+                    <span>AI</span>
                     <span>Fashion</span>
                 </div>
             </div>
@@ -834,7 +834,7 @@
 
     <div class="tagline-wrap">
         <div class="footer-text reveal d2" data-i18n="tagline">
-            Else is designed to make shopping secondhand fashion feel as good as buying firsthand.
+            Else is the AI-native marketplace for secondhand fashion, designed to feel as good as buying new.
         </div>
     </div>
 
@@ -923,7 +923,7 @@
     const TRANSLATIONS = {
         en: {
             metaDescription: 'The Else Company: curated secondhand fashion with a firsthand feeling. Coming soon.',
-            tagline: 'Else is designed to make shopping secondhand fashion feel as good as buying firsthand.',
+            tagline: 'Else is the AI-native marketplace for secondhand fashion, designed to feel as good as buying new.',
             about: 'About us',
             comingSoon: 'Coming soon',
             contactIntro: `Reach out to ${ELSE_LINK} for general and press inquiries, and follow us along at the links below.`,
@@ -951,7 +951,7 @@
         },
         es: {
             metaDescription: 'The Else Company: moda de segunda mano seleccionada, con la sensación de estrenar. Próximamente.',
-            tagline: 'Else está pensada para que comprar moda de segunda mano sea tan especial como estrenar.',
+            tagline: 'Else es el marketplace de moda de segunda mano nativo de IA, pensado para que comprar sea tan especial como estrenar.',
             about: 'Sobre nosotros',
             comingSoon: 'Próximamente',
             contactIntro: `Escribe a ${ELSE_LINK} para consultas generales y de prensa, y síguenos en los enlaces de abajo.`,
@@ -979,7 +979,7 @@
         },
         fr: {
             metaDescription: 'The Else Company : la mode de seconde main sélectionnée, avec la sensation du neuf. Bientôt disponible.',
-            tagline: "Else est pensée pour que la mode de seconde main s'achète avec le même plaisir que le neuf.",
+            tagline: "Else est la marketplace de mode de seconde main native IA, pensée pour offrir le même plaisir qu'un achat neuf.",
             about: 'À propos',
             comingSoon: 'Bientôt disponible',
             contactIntro: `Écrivez à ${ELSE_LINK} pour toute demande générale ou presse, et suivez-nous via les liens ci-dessous.`,
@@ -1007,7 +1007,7 @@
         },
         de: {
             metaDescription: 'The Else Company: kuratierte Secondhand-Mode, die sich wie neu anfühlt. Demnächst.',
-            tagline: 'Else ist so gestaltet, dass sich der Kauf von Secondhand-Mode genauso besonders anfühlt wie ein Neukauf.',
+            tagline: 'Else ist der KI-native Marktplatz für Secondhand-Mode, der sich so gut anfühlt wie ein Neukauf.',
             about: 'Über uns',
             comingSoon: 'Demnächst',
             contactIntro: `Schreib an ${ELSE_LINK} für allgemeine Anfragen und Presseanfragen und folge uns über die Links unten.`,
@@ -1035,7 +1035,7 @@
         },
         it: {
             metaDescription: 'The Else Company: moda second hand selezionata, con la sensazione del nuovo. Prossimamente.',
-            tagline: 'Else è pensata perché acquistare moda second hand sia speciale quanto comprare qualcosa di nuovo.',
+            tagline: 'Else è il marketplace di moda second hand nativo AI, pensato per regalare la stessa sensazione di un acquisto nuovo.',
             about: 'Chi siamo',
             comingSoon: 'Prossimamente',
             contactIntro: `Scrivi a ${ELSE_LINK} per informazioni generali e richieste stampa, e seguici tramite i link qui sotto.`,
@@ -1063,7 +1063,7 @@
         },
         pt: {
             metaDescription: 'The Else Company: moda de segunda mão selecionada, com sensação de novo. Em breve.',
-            tagline: 'A Else foi pensada para que comprar moda de segunda mão seja tão especial quanto estrear.',
+            tagline: 'A Else é o marketplace de moda de segunda mão nativo de IA, pensado para ser tão bom quanto comprar novo.',
             about: 'Sobre nós',
             comingSoon: 'Em breve',
             contactIntro: `Escreva para ${ELSE_LINK} para dúvidas gerais e de imprensa, e siga-nos nos links abaixo.`,
@@ -1259,21 +1259,64 @@
 
     const NEWSLETTER_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzZ4DXSE1MHEBm0YE2ja69Lr7MSzBOmjRJs6lUyJSHpe6pwrZc6FRbVRC4Y0FPeDphN/exec';
 
-    function recordVisit() {
-        if (!NEWSLETTER_ENDPOINT || !navigator.sendBeacon) return;
+    function detectOs(ua) {
+        if (/iPhone|iPad|iPod/.test(ua)) return 'iOS';
+        if (/Android/.test(ua)) return 'Android';
+        if (/CrOS/.test(ua)) return 'ChromeOS';
+        if (/Mac OS X|Macintosh/.test(ua)) return 'macOS';
+        if (/Windows/.test(ua)) return 'Windows';
+        if (/Linux/.test(ua)) return 'Linux';
+        return 'Other';
+    }
+
+    function detectBrowser(ua) {
+        if (/Instagram/.test(ua)) return 'Instagram app';
+        if (/musical_ly|TikTok|BytedanceWebview/.test(ua)) return 'TikTok app';
+        if (/FBAN|FBAV/.test(ua)) return 'Facebook app';
+        if (/LinkedInApp/.test(ua)) return 'LinkedIn app';
+        if (/WhatsApp/.test(ua)) return 'WhatsApp';
+        if (/Edg\//.test(ua)) return 'Edge';
+        if (/OPR\//.test(ua)) return 'Opera';
+        if (/SamsungBrowser/.test(ua)) return 'Samsung Internet';
+        if (/CriOS|Chrome\//.test(ua)) return 'Chrome';
+        if (/FxiOS|Firefox\//.test(ua)) return 'Firefox';
+        if (/Safari\//.test(ua)) return 'Safari';
+        return 'Other';
+    }
+
+    // Anonymous context sent with every visit and signup (no cookies, no identifiers)
+    function visitContext() {
         let referrer = '';
         try {
             const host = document.referrer ? new URL(document.referrer).hostname : '';
-            if (host && host !== location.hostname) referrer = host;
+            if (host && host !== location.hostname) referrer = host.replace(/^www\./, '');
         } catch {
         }
-        const visit = new URLSearchParams({
-            type: 'visit',
+        let timezone = 'unknown';
+        try {
+            timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown';
+        } catch {
+        }
+        const query = new URLSearchParams(location.search);
+        const ua = navigator.userAgent || '';
+        return {
             page: location.pathname,
             referrer: referrer || 'direct',
             device: window.matchMedia('(max-width: 600px)').matches ? 'mobile' : 'desktop',
-            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown',
-        });
+            timezone,
+            browser_language: navigator.language || 'unknown',
+            site_language: currentLanguage,
+            os: detectOs(ua),
+            browser: detectBrowser(ua),
+            utm_source: query.get('utm_source') || '',
+            utm_medium: query.get('utm_medium') || '',
+            utm_campaign: query.get('utm_campaign') || '',
+        };
+    }
+
+    function recordVisit() {
+        if (!NEWSLETTER_ENDPOINT || !navigator.sendBeacon) return;
+        const visit = new URLSearchParams({type: 'visit', ...visitContext()});
         navigator.sendBeacon(NEWSLETTER_ENDPOINT, visit);
     }
 
@@ -1388,6 +1431,7 @@
         data.append('consent_text', document.getElementById('consent-text').textContent.replace(/\s+/g, ' ').trim());
         data.append('consent_timestamp', new Date().toISOString());
         data.append('language', currentLanguage);
+        Object.entries(visitContext()).forEach(([key, value]) => data.append(key, value));
 
         setSending(true);
         try {
