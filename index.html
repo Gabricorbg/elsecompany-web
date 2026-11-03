@@ -1411,6 +1411,41 @@
     });
 
     applyLanguage(currentLanguage);
+
+    // iPhone / iPad only: the page is a little taller than the screen (so the photo reaches the
+    // bottom edge). If it gets dragged, glide it back to the top once the finger is lifted,
+    // so it feels like an elastic bounce instead of a real scroll.
+    if (CSS.supports('-webkit-touch-callout', 'none')) {
+        let touching = false;
+        let settleTimer = null;
+
+        function springBack() {
+            const typing = document.activeElement && document.activeElement.matches('input, textarea');
+            if (touching || typing || window.scrollY <= 0) return;
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function scheduleSpringBack() {
+            clearTimeout(settleTimer);
+            settleTimer = setTimeout(springBack, 120);
+        }
+
+        window.addEventListener('touchstart', () => {
+            touching = true;
+            clearTimeout(settleTimer);
+        }, {passive: true});
+        window.addEventListener('touchend', () => {
+            touching = false;
+            scheduleSpringBack();
+        }, {passive: true});
+        window.addEventListener('touchcancel', () => {
+            touching = false;
+            scheduleSpringBack();
+        }, {passive: true});
+        window.addEventListener('scroll', scheduleSpringBack, {passive: true});
+        // After the keyboard closes, return to the top as well
+        document.addEventListener('focusout', scheduleSpringBack);
+    }
 </script>
 
 </body>
